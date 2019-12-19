@@ -27,5 +27,4 @@
 (require 'base-global-keys)
 
 (require 'lang-rust)
-(require 'ext-org)
 ;;; init.el ends here
