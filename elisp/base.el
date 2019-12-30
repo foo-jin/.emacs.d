@@ -16,16 +16,6 @@
 (defconst private-dir  (expand-file-name "private/" user-emacs-directory))
 (defconst temp-dir (expand-file-name "emacs/" "~/.cache/"))
 
-;; Core settings
-;; UTF-8 please
-(set-charset-priority 'unicode)
-(setq locale-coding-system   'utf-8)   ; pretty
-(set-terminal-coding-system  'utf-8)   ; pretty
-(set-keyboard-coding-system  'utf-8)   ; pretty
-(set-selection-coding-system 'utf-8)   ; please
-(prefer-coding-system        'utf-8)   ; with sugar on top
-(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
-
 ;; Emacs customizations
 (setq confirm-kill-emacs                  'y-or-n-p
       confirm-nonexistent-file-or-buffer  t
@@ -80,7 +70,6 @@
 		       (make-directory (expand-file-name "auto-save-list/" temp-dir) :parents))
 
 (fset 'yes-or-no-p 'y-or-n-p)
-(global-auto-revert-mode t)
 
 ;; Disable toolbar & menubar
 (menu-bar-mode -1)
