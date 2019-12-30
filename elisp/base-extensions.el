@@ -81,6 +81,10 @@
   (setq-default ediff-highlight-all-diffs 'nil)
   (setq ediff-diff-options "-w"))
 
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
+
 
 (use-package expand-region
   :delight
@@ -193,6 +197,9 @@
    undo-tree-auto-save-history nil
    undo-tree-history-directory-alist `(("." . ,(concat temp-dir "/undo/"))))
   (global-undo-tree-mode 1))
+
+
+;; (use-package vterm)
 
 
 (use-package which-key
