@@ -52,7 +52,8 @@
   :hook (rust-mode . lsp)
   :commands lsp
   :config
-  (setq lsp-enable-snippet nil))
+  (setq lsp-enable-snippet nil
+	lsp-rust-server 'rust-analyzer))
 
 (use-package lsp-ui
   :after lsp-mode
