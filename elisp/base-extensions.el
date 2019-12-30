@@ -73,6 +73,7 @@
 (use-package dashboard
   :delight
   :config
+  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
   (dashboard-setup-startup-hook))
 
 
