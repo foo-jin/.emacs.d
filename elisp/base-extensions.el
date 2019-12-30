@@ -89,7 +89,8 @@
 
 (use-package counsel-projectile
   :delight
-  :bind-keymap ("C-c p" . projectile-command-map))
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :config (counsel-projectile-mode))
 
 
 (use-package hlinum
