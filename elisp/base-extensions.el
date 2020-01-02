@@ -152,6 +152,7 @@
   :delight
   :hook ((org-mode . org-bullets-mode))
   :config (setq org-hide-leading-stars t))
+(use-package pass)
 
 
 (use-package page-break-lines
