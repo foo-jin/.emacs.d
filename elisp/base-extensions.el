@@ -17,7 +17,6 @@
   :delight
   :bind
   ("M-x" . counsel-M-x)
-  ("C-x C-m" . counsel-M-x)
   ("C-x C-f" . counsel-find-file)
   ("C-x c k" . counsel-yank-pop)
   :config (counsel-mode))
@@ -31,6 +30,12 @@
   (:map read-expression-map ("C-r" . counsel-expression-history))
   :config
   (setq ivy-use-virtual-buffers nil))
+
+(use-package ace-window
+  :bind ("M-o" . ace-window)
+  :config
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
+	aw-scope 'frame))
 
 
 (use-package company
@@ -82,6 +87,7 @@
   (setq-default ediff-highlight-all-diffs 'nil)
   (setq ediff-diff-options "-w"))
 
+
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
@@ -89,7 +95,7 @@
 
 (use-package expand-region
   :delight
-  :bind ("C-=" . er/expand-region))
+  :bind ("C-<tab>" . er/expand-region))
 
 
 (use-package counsel-projectile
@@ -105,14 +111,15 @@
 
 (use-package linum
   :delight
+  :hook ((prog-mode . linum-mode))
   :config
-  (setq linum-format " %3d ")
-  (global-linum-mode nil))
+  (setq linum-format " %3d "))
 
 
 (use-package magit
   :config
-  (setq magit-completing-read-function 'ivy-completing-read))
+  (setq magit-completing-read-function 'ivy-completing-read
+	magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 
 (use-package pass)
@@ -133,7 +140,8 @@
   :config
   (setq projectile-known-projects-file
 	(expand-file-name "projectile-bookmarks.eld" temp-dir))
-  (setq projectile-completion-system 'ivy)
+  (setq projectile-completion-system 'ivy
+	projectile-switch-project-action 'magit-status)
   (projectile-mode))
 
 
@@ -155,17 +163,7 @@
   (require 'smartparens-config))
 
 
-(use-package undo-tree
-  :delight
-  :config
-  ;; Remember undo history
-  (setq
-   undo-tree-auto-save-history nil
-   undo-tree-history-directory-alist `(("." . ,(concat temp-dir "/undo/"))))
-  (global-undo-tree-mode 1))
-
-
-;; (use-package vterm)
+(use-package vterm)
 
 
 (use-package which-key
@@ -176,6 +174,7 @@
 
 (use-package wgrep
     :delight)
+
 
 (use-package yasnippet
   :hook ((rust-mode . yas-minor-mode))
