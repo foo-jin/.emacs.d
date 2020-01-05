@@ -28,4 +28,5 @@
 
 (require 'lang-rust)
 (require 'lang-latex)
+(require 'lang-java)
 ;;; init.el ends here
