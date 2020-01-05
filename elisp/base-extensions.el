@@ -49,7 +49,6 @@
 
 ;; lsp-mode
 (use-package lsp-mode
-  :hook (rust-mode . lsp)
   :commands lsp
   :config
   (setq lsp-enable-snippet nil

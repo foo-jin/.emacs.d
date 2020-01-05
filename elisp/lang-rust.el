@@ -5,7 +5,8 @@
 ;; rust-mode
 ;; https://github.com/rust-lang/rust-mode
 (use-package rust-mode
-  :hook ((rust-mode . superword-mode))
+  :hook ((rust-mode . lsp)
+	 (rust-mode . superword-mode))
   :mode ("\\.rs\\'" . rust-mode)
   :config (setq rust-format-on-save t))
 
