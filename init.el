@@ -27,4 +27,5 @@
 (require 'base-global-keys)
 
 (require 'lang-rust)
+(require 'lang-latex)
 ;;; init.el ends here
