@@ -33,13 +33,14 @@
       cursor-in-non-selected-windows     nil
       highlight-nonselected-windows      nil
       ;; PATH
-      ;; exec-path                          (append exec-path '("/usr/local/bin/"))
       indent-tabs-mode                   nil
       inhibit-startup-message            t
       fringes-outside-margins            t
       select-enable-clipboard            t
       use-package-always-ensure          t
+      inhibit-x-resources                t
       sentence-end-double-space nil)
+(blink-cursor-mode)
 
 ;; Font face
 (set-face-attribute 'default nil
