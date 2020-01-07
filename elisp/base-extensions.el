@@ -81,6 +81,9 @@
   (dashboard-setup-startup-hook))
 
 
+(use-package deadgrep)
+
+
 (use-package ediff
   :config
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
