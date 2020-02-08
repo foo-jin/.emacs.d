@@ -15,12 +15,5 @@
 (use-package toml-mode
   :mode "\\.toml\\'")
 
-;; cargo.el
-;; https://github.com/kwrooijen/cargo.el
-(use-package cargo
-  :init
-  :hook ((rust-mode . cargo-minor-mode)
-	 (toml-mode . cargo-minor-mode)))
-
 (provide 'lang-rust)
 ;;; lang-rust.el ends here
