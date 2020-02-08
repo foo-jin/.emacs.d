@@ -19,6 +19,7 @@
   ("M-x" . counsel-M-x)
   ("C-x C-f" . counsel-find-file)
   ("C-x c k" . counsel-yank-pop)
+  ("M-i" . counsel-imenu)
   :config (counsel-mode))
 
 (use-package ivy
@@ -29,7 +30,8 @@
   ("C-x C-r" . ivy-resume)
   (:map read-expression-map ("C-r" . counsel-expression-history))
   :config
-  (setq ivy-use-virtual-buffers nil))
+  (setq ivy-use-virtual-buffers nil
+	ivy-use-selectable-prompt t))
 
 (use-package ace-window
   :bind ("M-o" . ace-window)
@@ -55,6 +57,7 @@
 ;; lsp-mode
 (use-package lsp-mode
   :commands lsp
+  :bind ("M-RET" . lsp-execute-code-action)
   :config
   (setq lsp-enable-snippet nil
 	lsp-rust-server 'rust-analyzer))
@@ -62,9 +65,10 @@
 (use-package lsp-ui
   :after lsp-mode
   :hook (lsp-mode . lsp-ui-mode)
-  :config
-  (setq lsp-ui-doc-max-width 50
-	lsp-ui-doc-max-height 20))
+  :bind ("C-c q" . lsp-ui-doc-hide)
+  :config (setq lsp-ui-sideline-show-hover nil
+		lsp-ui-doc-position 'top
+		lsp-ui-doc-delay 2))
 
 
 ;; flycheck
@@ -124,6 +128,12 @@
   (setq magit-completing-read-function 'ivy-completing-read
 	magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
+(use-package forge
+  :after magit
+  :config
+  (setq forge-database-file (expand-file-name "forge-database.sqlite" private-dir)
+	forge-owned-accounts '((foo-jin))))
+
 
 (use-package pass)
 
@@ -133,6 +143,7 @@
 
 
 (use-package powerline
+  :defer t
   :delight
   :config
   (powerline-default-theme))
@@ -140,11 +151,11 @@
 
 (use-package projectile
   :delight '(:eval (format " [%s]" (projectile-project-name)))
-  :config
+  :init
   (setq projectile-known-projects-file
 	(expand-file-name "projectile-bookmarks.eld" temp-dir))
   (setq projectile-completion-system 'ivy
-	projectile-switch-project-action 'magit-status)
+	counsel-projectile-switch-project-action 'magit-status)
   (projectile-mode))
 
 
