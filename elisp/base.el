@@ -41,6 +41,7 @@
       inhibit-x-resources                t
       sentence-end-double-space nil)
 (blink-cursor-mode)
+(load custom-file)
 
 ;; Font face
 (set-face-attribute 'default nil
