@@ -3,6 +3,8 @@
 ;;; Code:
 
 (use-package org
+  :hook ((org-mode . auto-fill-mode)
+	 (org-mode . flyspell-mode))
   :config
   (setq org-todo-keywords (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
 				  (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
@@ -19,14 +21,19 @@
 					     ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
 					     ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
 					     ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
+	org-capture-templates '(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
+								"* TODO %?\nAdded: %U\n %i"))
 	org-use-fast-todo-selection t
 	org-startup-indented t
 	org-ellipsis "  "
 	org-pretty-entities t
-	org-hide-emphasis-markers t)
+	org-hide-emphasis-markers t
+	org-special-ctrl-a/e t
+	org-hide-leading-stars t)
   :bind
   ("C-c l" . org-store-link)
-  ("C-c a" . org-agenda))
+  ("C-c a" . org-agenda)
+  ("C-c c" . org-capture))
 
 ;; (use-package org-projectile
   ;; :delight
@@ -38,10 +45,9 @@
 
 (use-package org-bullets
   :delight
-  :hook ((org-mode . org-bullets-mode))
+  ;; :hook ((org-mode . org-bullets-mode))
   :config
-  (setq org-hide-leading-stars t
-	org-bullets-bullet-list
+  (setq org-bullets-bullet-list
 	'("⊗" "✻" "☉" "❃" "○" "❆" "◦")))
 
 (provide 'lang-org)
