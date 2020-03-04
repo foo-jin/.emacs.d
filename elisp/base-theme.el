@@ -4,9 +4,13 @@
 
 (setq custom-safe-themes t)
 (use-package gruvbox-theme
-  :defer t
-  :init
-  (load-theme 'gruvbox-dark-medium))
+  :defer t)
+
+(use-package twilight-bright-theme
+  :defer t)
+
+(load-theme 'gruvbox-dark-medium)
+
 
 (provide 'base-theme)
 ;;; base-theme.el ends here
