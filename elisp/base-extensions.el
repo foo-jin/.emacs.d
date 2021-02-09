@@ -5,7 +5,9 @@
 (require 'base)
 
 (use-package delight
-  :config (delight '((eldoc-mode nil "eldoc"))))
+  :config (delight '((eldoc-mode nil "eldoc")
+					 (superword-mode)
+					 (auto-revert-mode))))
 
 ;; https://github.com/abo-abo/avy
 (use-package avy
@@ -37,43 +39,75 @@
   :bind ("M-o" . ace-window)
   :config
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
-	aw-scope 'frame))
+		aw-scope 'frame
+		aw-minibuffer-flag t))
 
 
 (use-package company
   :delight
   :hook ((prog-mode . company-mode))
   :config
-  (setq company-idle-delay 0.1
+  (setq company-minimum-prefix-length 3
+	company-idle-delay 0.0
 	company-tooltip-align-annotations t))
 
-(use-package company-lsp
-  :delight
-  :commands company-lsp
-  :after (lsp-mode company)
-  :config (push 'company-lsp company-backends))
+(use-package company-box
+  :hook (company-mode . company-box-mode))
 
 
 ;; lsp-mode
 (use-package lsp-mode
-  :commands lsp
+  :init (setq lsp-keymap-prefix "C-c l")
   :bind ("M-RET" . lsp-execute-code-action)
+  :hook ((rustic-mode . lsp-deferred)
+		 ;; (before-save . (lambda () (when (eq 'rust-mode major-mode)
+		 ;; 							 (lsp-format-buffer))))
+		 (lsp-mode . lsp-enable-which-key-integration))
+  :commands (lsp lsp-deferred)
   :config
   (setq lsp-enable-snippet nil
-	lsp-rust-server 'rust-analyzer))
+		lsp-rust-server 'rust-analyzer
+		lsp-signature-auto-activate t
+	    lsp-rust-analyzer-cargo-watch-command "clippy"
+		lsp-eldoc-render-all t))
 
 (use-package lsp-ui
-  :after lsp-mode
-  :hook (lsp-mode . lsp-ui-mode)
-  :bind ("C-c q" . lsp-ui-doc-hide)
-  :config (setq lsp-ui-sideline-show-hover nil
-		lsp-ui-doc-position 'top
-		lsp-ui-doc-delay 2))
+  :bind ("C-c q" . lsp-ui-doc)
+  :config (setq lsp-ui-doc-enable nil
+				lsp-ui-sideline-show-hover t
+				lsp-ui-peek-always-show t
+				lsp-ui-doc-position 'at-point))
+
+(use-package lsp-ivy
+  :bind ("C-c s" . lsp-ivy-workspace-symbol)
+  :commands lsp-ivy-workspace-symbol)
+
+
+
+;; debuggers
+(use-package dap-mode
+  :init
+  (require 'dap-gdb-lldb)
+  (dap-register-debug-template "Rust::GDB Run Configuration"
+                               (list :type "gdb"
+									 :request "launch"
+									 :name "GDB::Run"
+									 :gdbpath "rust-gdb"
+									 :target nil
+									 :cwd nil)))
 
 
 ;; flycheck
 (use-package flycheck
   :delight
+  ;; :hook (flycheck-after-syntax-check
+  ;; 		  . (lambda  ()
+  ;;            (if flycheck-current-errors
+  ;;                (flycheck-list-errors)
+  ;;              (when (get-buffer "*Flycheck errors*")
+  ;;                (switch-to-buffer "*Flycheck errors*")
+  ;;                (kill-buffer (current-buffer))
+  ;;                (delete-window)))))
   :config (setq lsp-prefer-flymake nil)
   :init (global-flycheck-mode))
 
@@ -135,6 +169,7 @@
 	forge-owned-accounts '((foo-jin))))
 
 
+(setf epa-pinentry-mode 'loopback)
 (use-package pass)
 
 
@@ -177,9 +212,6 @@
   (require 'smartparens-config))
 
 
-(use-package vterm)
-
-
 (use-package which-key
   :delight
   :config
@@ -187,7 +219,7 @@
 
 
 (use-package wgrep
-    :delight)
+  :delight)
 
 
 (use-package yasnippet

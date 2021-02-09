@@ -33,20 +33,24 @@
       cursor-in-non-selected-windows     nil
       highlight-nonselected-windows      nil
       ;; PATH
-      indent-tabs-mode                   nil
       inhibit-startup-message            t
       fringes-outside-margins            t
       select-enable-clipboard            t
       use-package-always-ensure          t
       inhibit-x-resources                t
-      sentence-end-double-space nil)
+      sentence-end-double-space nil
+      gc-cons-threshold 100000000)
 (blink-cursor-mode)
 (load custom-file)
+
+;; indentation
+(setq-default indent-tabs-mode t
+	      tab-width 4)
 
 ;; Font face
 (set-face-attribute 'default nil
                     :family "Source Code Pro"
-	            :height 110
+					:height 110
                     :width 'normal
                     :weight 'normal)
 

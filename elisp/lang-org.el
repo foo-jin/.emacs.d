@@ -31,7 +31,7 @@
 	org-special-ctrl-a/e t
 	org-hide-leading-stars t)
   :bind
-  ("C-c l" . org-store-link)
+  ("C-c C-l" . org-store-link)
   ("C-c a" . org-agenda)
   ("C-c c" . org-capture))
 

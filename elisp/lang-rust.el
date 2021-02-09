@@ -2,17 +2,19 @@
 ;;; Commentary:
 ;;; Code:
 
-;; rust-mode
-;; https://github.com/rust-lang/rust-mode
-(use-package rust-mode
-  :hook ((rust-mode . lsp)
-	 (rust-mode . superword-mode))
-  :mode ("\\.rs\\'" . rust-mode)
-  :config (setq rust-format-on-save t))
+;; rustic-mode
+(use-package rustic
+  :bind (:map rustic-mode-map
+			  ("C-c C-c a" . rustic-cargo-add)
+			  ("C-c C-c r" . rustic-cargo-rm))
+  :config
+  (setq rustic-format-on-save t
+		rustic-lsp-format t))
 
 ;; toml-mode
 ;; https://github.com/dryman/toml-mode.el
 (use-package toml-mode
+  :hook ((toml-mode . prog-mode))
   :mode "\\.toml\\'")
 
 (provide 'lang-rust)

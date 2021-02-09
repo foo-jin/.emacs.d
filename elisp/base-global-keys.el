@@ -11,6 +11,11 @@
 (global-set-key (kbd "C-v") 'View-scroll-half-page-forward)
 (global-set-key (kbd "M-v") 'View-scroll-half-page-backward)
 
+(global-set-key (kbd "C-a") #'move-beginning-of-line-or-indentation)
+(global-set-key (kbd "C-e") #'move-end-of-line-or-indentation)
+
+(global-set-key (kbd "M-O") 'switch-to-minibuffer-window)
+
 
 (provide 'base-global-keys)
 ;;; base-global-keys.el ends here
