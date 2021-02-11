@@ -16,6 +16,8 @@
   (doom-themes-org-config)
   (load-theme 'doom-homage-white))
 
+(require 'generic-x)
+
 
 (provide 'base-theme)
 ;;; base-theme.el ends here
