@@ -4,7 +4,7 @@
 (package-initialize)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/")
-             '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+         '("elpy" . "http://jorgenschaefer.github.io/packages/"))
 
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -45,7 +45,9 @@
 
 ;; indentation
 (setq-default indent-tabs-mode t
-	      tab-width 4)
+			  tab-width 4)
+
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 ;; Font face
 (set-face-attribute 'default nil

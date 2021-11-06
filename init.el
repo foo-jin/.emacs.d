@@ -26,9 +26,10 @@
 (require 'base-functions)
 (require 'base-global-keys)
 
-(require 'lang-rust)
-(require 'lang-latex)
-;; (require 'lang-java)
+(require 'base-selection)
+(require 'base-programming)
+
+(require 'lang-modes)
 (require 'lang-org)
-(require 'lang-various)
+(require 'lang-python)
 ;;; init.el ends here

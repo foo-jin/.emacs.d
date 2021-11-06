@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: Result<Type, failure::Error>
+# name: Result<Type, Error>
 # key: result
 # --
-Result<${1:Type}, ${2:failure::Error}>
+Result<${1:Type}, ${2:Error}>

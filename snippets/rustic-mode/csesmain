@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: cses main
+# key: csesmain
+# --
+fn main() {
+    let start = std::time::Instant::now();
+    solve();
+    let dt = start.elapsed();
+    eprintln!("dt: {}s {}ms", dt.as_secs(), dt.as_millis());
+    eprintln!("mem: {}", cses::MemoryStats::current())
+}

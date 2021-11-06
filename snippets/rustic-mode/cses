@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: cses skeleton
+# key: cses
+# --
+/*!
+description
+*/
+
+use std::io::{BufReader, Read};
+
+fn solve() {
+    let mut reader = BufReader::new(std::io::stdin());
+}
+
+fn main() {
+    let start = std::time::Instant::now();
+    solve();
+    let dt = start.elapsed();
+    eprintln!("dt: {}s {}ms", dt.as_secs(), dt.as_millis());
+    eprintln!("mem: {}", cses::MemoryStats::current())
+}
