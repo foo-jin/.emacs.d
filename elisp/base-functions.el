@@ -42,7 +42,22 @@ Go to indentation otherwise"
     "Switch to minibuffer window (if active)."
     (interactive)
     (when (active-minibuffer-window)
-        (select-window (active-minibuffer-window))))
+      (select-window (active-minibuffer-window))))
+
+
+;; https://karthinks.com/software/fifteen-ways-to-use-embark/
+(defun sudo-find-file (file)
+  "Open FILE as root."
+  (interactive "FOpen file as root: ")
+  (when (file-writable-p file)
+    (user-error "File is user writeable, aborting sudo"))
+  (find-file (if (file-remote-p file)
+                 (concat "/" (file-remote-p file 'method) ":"
+                         (file-remote-p file 'user) "@" (file-remote-p file 'host)
+                         "|sudo:root@"
+                         (file-remote-p file 'host) ":" (file-remote-p file 'localname))
+               (concat "/sudo:root@localhost:" file))))
+
 
 (provide 'base-functions)
 ;;; base-functions.el ends here
