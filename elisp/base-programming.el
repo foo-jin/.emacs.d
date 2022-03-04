@@ -16,7 +16,7 @@
   :bind (:map company-active-map ("<tab>" . #'company-complete-common-or-cycle))
   :config
   (setq company-minimum-prefix-length 2
-		company-idle-delay 0.3
+		company-idle-delay 0.1
 		company-tooltip-align-annotations t))
 
 (use-package company-box
@@ -41,6 +41,11 @@
 				lsp-ui-sideline-show-hover t
 				lsp-ui-peek-always-show t
 				lsp-ui-doc-position 'at-point))
+
+;; emacs-tree-sitter.github.io
+(use-package tree-sitter)
+(use-package tree-sitter-langs)
+
 
 ;; flycheck
 (use-package flycheck

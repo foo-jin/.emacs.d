@@ -59,5 +59,12 @@ Go to indentation otherwise"
                (concat "/sudo:root@localhost:" file))))
 
 
+;; open terminal
+(defun open-alacritty-in-workdir ()
+  "Open an alacritty in the current folder"
+  (interactive)
+  (call-process-shell-command
+   (concat "alacritty --working-directory=" default-directory) nil 0))
+
 (provide 'base-functions)
 ;;; base-functions.el ends here

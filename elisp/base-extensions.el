@@ -10,11 +10,11 @@
 					 (auto-revert-mode nil "autorevert"))))
 
 
-;; github.com/abo-abo/avy
+;; https://github.com/abo-abo/avy
 (use-package avy
   :delight
   :bind
-  ("M-g g" . #'avy-goto-line)
+  ("M-g M-g" . #'avy-goto-line)
   ("M-g c" . #'avy-goto-char-2)
   ("M-g C" . #'avy-goto-char-timer))
 
@@ -29,11 +29,12 @@
 		aw-dispatch-always t))
 
 
-;; github.com/hrs/engine-mode
+;; https://github.com/hrs/engine-mode
 (use-package engine-mode
   :init
   (defengine rust-std
-	"file:///home/frank/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=%s")
+	"file:///home/frank/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=%s"
+	:browser 'eww-browse-url)
   (defengine google
 	"https://google.com/search?q=%s")
   :bind
@@ -63,7 +64,7 @@
   (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
 
 
-;; github.com/magnars/expand-region.el
+;; https://github.com/magnars/expand-region.el
 (use-package expand-region
   :delight
   :bind ("C-<tab>" . er/expand-region))

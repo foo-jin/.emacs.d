@@ -48,7 +48,7 @@
                                (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
   :bind
-  ("C-c l" . org-store-link)
+  ("C-c C-l" . org-store-link)
   ("C-c a" . org-agenda)
   ("C-c c" . org-capture))
 

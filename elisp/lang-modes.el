@@ -3,24 +3,26 @@
 ;;; Code:
 
 
-;; github.com/brotzeit/rustic
+;; https://github.com/brotzeit/rustic
 (use-package rustic
   :hook ((rustic-mode . yas-minor-mode)
 		 (rustic-mode . lsp-deferred)
+		 (rustic-mode . tree-sitter-hl-mode)
 		 (before-save . (lambda () (when (eq 'rustic-mode major-mode)
 									 (lsp-format-buffer)))))
   :bind (:map rustic-mode-map
 			  ("C-c C-c c a" . rustic-cargo-add)
-			  ("C-c C-c c r" . rustic-cargo-rm))
+			  ("C-c C-c c r" . rustic-cargo-rm)
+			  ("C-c TAB" . rustic-popup))
   :config
   (setq compilation-scroll-output t))
 
-;; github.com/dryman/toml-mode.el
+;; https://github.com/dryman/toml-mode.el
 (use-package toml-mode
   :hook ((toml-mode . prog-mode))
   :mode "\\.toml\\'")
 
-;; github.com/juergenhoetzel/pkgbuild-mode
+;; https://github.com/juergenhoetzel/pkgbuild-mode
 (use-package pkgbuild-mode)
 (use-package yaml-mode
   :delight)
@@ -40,14 +42,14 @@
 		TeX-source-correlate-start-server t)
   (setq-default TeX-master nil))
 
-;; github.com/politza/pdf-tools
+;; https://github.com/politza/pdf-tools
 ;; M-x pdf-tools-install RET
 (use-package pdf-tools
   :config
   (pdf-tools-install))
 
 
-;; github.com/emacs-lsp/lsp-java
+;; https://github.com/emacs-lsp/lsp-java
 (use-package lsp-java
   :defer t
   :after lsp
@@ -56,7 +58,7 @@
 						(setq indent-tabs-mode nil)))))
 
 
-;; github.com/juergenhoetzel/pkgbuild-mode
+;; https://github.com/juergenhoetzel/pkgbuild-mode
 (use-package pkgbuild-mode)
 (use-package yaml-mode
   :delight)

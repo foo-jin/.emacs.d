@@ -2,12 +2,12 @@
 ;;; Commentary:
 ;;; Code:
 
-;; github.com/raxod502/selectrum
+;; https://github.com/raxod502/selectrum
 (use-package selectrum
   :config
   (selectrum-mode +1))
 
-;; github.com/raxod502/prescient.el
+;; https://github.com/raxod502/prescient.el
 (use-package prescient
   :config
   (setq selectrum-highlight-candidates-function #'orderless-highlight-matches)
@@ -22,7 +22,7 @@
   :config
   (company-prescient-mode))
 
-;; github.com/oantolin/orderless
+;; https://github.com/oantolin/orderless
 (use-package orderless
   :custom
   (completion-styles '(orderless))
@@ -35,13 +35,15 @@
   (marginalia-mode))
 
 
-;; github.com/minad/consult#configuration
+;; https://github.com/minad/consult#configuration
 (use-package consult
   :bind (("C-x b" . consult-buffer)
 		 ("M-i" . consult-imenu)
 		 ("M-y" . consult-yank-pop)
 		 ("M-g o" . consult-outline)
 		 ("M-g f" . consult-flycheck)
+		 ("M-g m" . consult-mark)
+		 ("M-g M" . consult-global-mark)
 		 ("M-s r" . consult-ripgrep)
 		 ("M-s g" . consult-git-grep)
 		 ("M-s f" . consult-fd)
@@ -49,9 +51,10 @@
 		 ("M-s l" . consult-line)
 		 ("M-s L" . consult-line-multi)
 		 ("M-s s" . consult-lsp-symbols)
-		 ("M-s e" . consult-isearch-history)
 		 ("M-s M-s" . consult-lsp-file-symbols)
-		 ("C-c p" . consult-projectile))
+		 ("C-c p" . consult-projectile)
+		 :map isearch-mode-map
+		 ("C-p" . consult-isearch-history))
   :config
   (setq consult-narrow-key "<")
   (when (executable-find "plocate")
@@ -59,8 +62,9 @@
   (consult-customize
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file consult-xref
+   consult-compile-error
    consult--source-file consult--source-project-file consult--source-bookmark
-   :preview-key '(:debounce 0.5 any)))
+   :preview-key '(:debounce 3 any)))
 
 (use-package consult-flycheck
   :after consult)

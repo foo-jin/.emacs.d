@@ -6,6 +6,11 @@ fn main() {
     let start = std::time::Instant::now();
     solve();
     let dt = start.elapsed();
-    eprintln!("dt: {}s {}ms", dt.as_secs(), dt.as_millis());
+	eprintln!(
+        "\ndt:  {}s {}ms {}μs",
+        dt.as_secs(),
+        dt.as_millis() - (1000 * dt.as_secs() as u128),
+        dt.as_micros() - (1000 * dt.as_millis())
+    );
     eprintln!("mem: {}", cses::MemoryStats::current())
 }
