@@ -58,11 +58,5 @@
 						(setq indent-tabs-mode nil)))))
 
 
-;; https://github.com/juergenhoetzel/pkgbuild-mode
-(use-package pkgbuild-mode)
-(use-package yaml-mode
-  :delight)
-
-
 (provide 'lang-modes)
 ;;; lang-modes.el ends here
