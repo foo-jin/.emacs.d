@@ -82,7 +82,9 @@
 (use-package yasnippet
   :config (yas-reload-all))
 
-;; (use-package deadgrep)
+;; https://github.com/Wilfred/deadgrep
+(use-package deadgrep)
+
 ;; (use-package ediff
 ;;   :config
 ;;   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
