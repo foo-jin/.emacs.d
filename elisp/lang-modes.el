@@ -10,10 +10,6 @@
 		 (rustic-mode . tree-sitter-hl-mode)
 		 (before-save . (lambda () (when (eq 'rustic-mode major-mode)
 									 (lsp-format-buffer)))))
-  :bind (:map rustic-mode-map
-			  ("C-c C-c c a" . rustic-cargo-add)
-			  ("C-c C-c c r" . rustic-cargo-rm)
-			  ("C-c TAB" . rustic-popup))
   :config
   (setq compilation-scroll-output t))
 
