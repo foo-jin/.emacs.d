@@ -32,7 +32,7 @@
   :commands (lsp lsp-deferred)
   :config
   (setq lsp-signature-auto-activate t
-		lsp-rust-analyzer-server-display-inlay-hints t
+		lsp-rust-analyzer-server-display-inlay-hints nil
 	    lsp-rust-analyzer-cargo-watch-command "clippy"))
 
 (use-package lsp-ui
