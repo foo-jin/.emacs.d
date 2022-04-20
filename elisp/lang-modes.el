@@ -13,10 +13,6 @@
   :config
   (setq compilation-scroll-output t))
 
-;; https://github.com/dryman/toml-mode.el
-(use-package toml-mode
-  :hook ((toml-mode . prog-mode))
-  :mode "\\.toml\\'")
 
 ;; https://github.com/juergenhoetzel/pkgbuild-mode
 (use-package pkgbuild-mode)
