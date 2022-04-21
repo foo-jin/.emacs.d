@@ -48,6 +48,7 @@
 			  tab-width 4)
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'conf-mode-hook 'display-line-numbers-mode)
 
 ;; Font face
 (set-face-attribute 'default nil
