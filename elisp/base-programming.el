@@ -10,6 +10,13 @@
   (require 'smartparens-config))
 
 
+(use-package diff-hl
+  :diminish
+  :config
+  (diff-hl-flydiff-mode t)
+  (global-diff-hl-mode))
+
+
 (use-package company
   :delight
   :hook ((prog-mode . company-mode))
