@@ -61,7 +61,10 @@
 
 (use-package exec-path-from-shell
   :config
-  (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
+  (when (daemonp)
+	(setq exec-path-from-shell-variables
+		  '("PATH" "MANPATH" "SSH_AUTH_SOCK" "CARGO_TARGET_DIR" "RIPGREP_CONFIG_PATH" "GNUPGHOME"))
+	(exec-path-from-shell-initialize)))
 
 
 ;; https://github.com/magnars/expand-region.el
