@@ -62,13 +62,6 @@
   :init (global-flycheck-mode))
 
 
-(use-package projectile
-  :delight '(:eval (format " [%s]" (projectile-project-name)))
-  :bind-keymap ("C-x p" . projectile-command-map)
-  :init
-  (setq projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" temp-dir)
-		projectile-switch-project-action #'magit-status)
-  (projectile-mode))
 
 
 ;; github.com/magit/magit
@@ -86,6 +79,12 @@
 		forge-owned-accounts '((foo-jin))))
 
 
+(use-package project
+  :pin gnu
+  :config
+  (setq project-list-file (expand-file-name "project-bookmarks.eld" temp-dir))
+  (add-to-list 'project-switch-commands
+			   '((consult-ripgrep "rg" ?r))))
 (use-package yasnippet
   :config (yas-reload-all))
 

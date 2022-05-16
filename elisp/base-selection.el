@@ -52,7 +52,8 @@
 		 ("M-s L" . consult-line-multi)
 		 ("M-s s" . consult-lsp-symbols)
 		 ("M-s M-s" . consult-lsp-file-symbols)
-		 ("C-c p" . consult-projectile)
+		 ("C-c p f" . consult-project-extra-find)
+		 ("C-c p o" . consult-project-extra-find-other-window)
 		 :map isearch-mode-map
 		 ("C-p" . consult-isearch-history))
   :config
@@ -69,10 +70,8 @@
 (use-package consult-flycheck
   :after consult)
 
-(use-package consult-projectile
-  :after (consult projectile)
-  :config
-  (setq consult-project-root-function #'projectile-project-root))
+(use-package consult-project-extra
+  :after (consult project))
 
 (use-package consult-lsp
   :after (consult lsp)

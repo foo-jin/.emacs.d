@@ -57,7 +57,6 @@
             (message (concat "Setting virtualenv to " pyenv-current-version))))))))
 
 (add-hook 'after-init-hook 'pyenv-init)
-(add-hook 'projectile-after-switch-project-hook 'pyenv-activate-current-project)
 
 (provide 'lang-python)
 ;;; lang-python.el ends here
