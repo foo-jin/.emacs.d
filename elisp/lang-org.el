@@ -54,9 +54,9 @@
 
 (use-package ob-async)
 
-(use-package cdlatex
-  :after (org)
-  :init (add-hook 'org-mode-hook 'turn-on-org-cdlatex))
+;; (use-package cdlatex
+;;   :after (org)
+;;   :init (add-hook 'org-mode-hook 'turn-on-org-cdlatex))
 
 (use-package org-roam
   :init
@@ -71,7 +71,8 @@
 		 ("C-c n a a" . org-roam-alias-add)
 		 ("C-c n a r" . org-roam-alias-remove))
   :config
-  (setq org-roam-capture-templates
+  (setq org-roam-db-location (expand-file-name "org-roam.db" private-dir)
+		org-roam-capture-templates
 		'(("d" "default" plain "- tags :: %?"
 		   :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 							  "#+title: ${title}\n#+created: %U\n#+last_modified: %U")

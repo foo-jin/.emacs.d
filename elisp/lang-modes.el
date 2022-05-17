@@ -6,12 +6,20 @@
 ;; https://github.com/brotzeit/rustic
 (use-package rustic
   :hook ((rustic-mode . yas-minor-mode)
-		 (rustic-mode . lsp-deferred)
-		 (rustic-mode . tree-sitter-hl-mode)
-		 (before-save . (lambda () (when (eq 'rustic-mode major-mode)
-									 (lsp-format-buffer)))))
+		 ;; (rustic-mode . eglot-ensure)
+		 ;; (before-save . (lambda () (when (eq 'rustic-mode major-mode)
+									 ;; (lsp-format-buffer))))
+		 (rustic-mode . tree-sitter-hl-mode))
+  :bind
+  (:map rustic-mode-map
+		("C-c <tab>" . rustic-popup)
+		("C-c C-<tab>" . rustic-popup)
+		("C-c C-p" . nil))
   :config
-  (setq compilation-scroll-output t))
+  (setq rustic-lsp-client 'lsp-mode
+		rustic-format-trigger 'on-save
+		rustic-format-display-method 'ignore
+		compilation-scroll-output t))
 
 
 ;; https://github.com/juergenhoetzel/pkgbuild-mode

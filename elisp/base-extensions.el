@@ -20,7 +20,7 @@
 
 
 (use-package ace-window
-  :bind ("M-o" . ace-window)
+  :bind ("M-o" . 'ace-window)
   :config
   (custom-set-faces '(aw-leading-char-face ((t (:foreground "cyan" :height 3.0)))))
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?k ?l)
@@ -29,25 +29,31 @@
 		aw-dispatch-always t))
 
 
+(use-package conf-mode
+  :bind (:map conf-mode-map ("C-c C-p" . nil)))
+
+
+;; (use-package imenu-list)
+(use-package ledger-mode)
+
+
 ;; https://github.com/hrs/engine-mode
 (use-package engine-mode
   :init
   (defengine rust-std
-	"file:///home/frank/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=%s"
-	:browser 'eww-browse-url)
+	"file:///home/frank/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/std/index.html?search=%s")
   (defengine google
 	"https://google.com/search?q=%s")
   :bind
-  ("M-s e r" . engine/search-rust-std)
-  ("M-s e g" . engine/search-google))
+  ("M-s e r" . 'engine/search-rust-std)
+  ("M-s e g" . 'engine/search-google))
 
 
 (use-package dashboard
   :delight
-  :bind
-  (:map dashboard-mode-map
-		("n" . 'dashboard-next-line)
-		("p" . 'dashboard-previous-line))
+  :bind (:map dashboard-mode-map
+			  ("n" . 'dashboard-next-line)
+			  ("p" . 'dashboard-previous-line))
   :config
   (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
   (dashboard-setup-startup-hook))
@@ -70,7 +76,7 @@
 ;; https://github.com/magnars/expand-region.el
 (use-package expand-region
   :delight
-  :bind ("C-<tab>" . er/expand-region))
+  :bind ("C-<tab>" . 'er/expand-region))
 
 
 (use-package page-break-lines
@@ -78,7 +84,7 @@
 
 
 (use-package powerline
-  :defer t
+  :defer
   :delight
   :config
   (powerline-default-theme))

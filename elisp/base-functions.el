@@ -66,5 +66,32 @@ Go to indentation otherwise"
   (call-process-shell-command
    (concat "alacritty --working-directory=" default-directory) nil 0))
 
+;; stolen, no, borrowed from:
+;; https://github.com/karthink/.emacs.d/blob/0d56c66c2e2d53ba05366493f433e523cc36cd87/lisp/setup-consult.el
+;; https://github.com/minad/consult/wiki#find-files-using-fd
+(defvar consult--fd-command nil)
+(defun consult--fd-builder (input)
+  (unless consult--fd-command
+    (setq consult--fd-command
+		  (if (eq 0 (call-process-shell-command "fdfind"))
+			  "fdfind")
+		  "fd"))
+  (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
+               (`(,re . ,hl) (funcall consult--regexp-compiler
+                                      arg 'extended t)))
+    (when re
+      (list :command (append
+                      (list consult--fd-command
+                            "--color=never" "--full-path"
+                            (consult--join-regexps re 'extended))
+                      opts)
+            :highlight hl))))
+
+(defun consult-fd (&optional dir initial)
+  (interactive "P")
+  (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
+         (default-directory (cdr prompt-dir)))
+    (call-interactively #'find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
+
 (provide 'base-functions)
 ;;; base-functions.el ends here

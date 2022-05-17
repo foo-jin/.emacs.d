@@ -6,7 +6,7 @@
 (autoload 'View-scroll-half-page-backward "view")
 
 ;; (global-set-key (kbd "[SHORTCUT]") '[FUNCTION])
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "C-v") 'View-scroll-half-page-forward)
 (global-set-key (kbd "M-v") 'View-scroll-half-page-backward)
 
@@ -17,6 +17,7 @@
 (global-set-key (kbd "M-O") 'switch-to-minibuffer-window)
 
 (global-set-key (kbd "C-c t") 'open-alacritty-in-workdir)
+(global-set-key (kbd "C-.") 'completion-at-point)
 
 (provide 'base-global-keys)
 ;;; base-global-keys.el ends here

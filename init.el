@@ -20,6 +20,7 @@
 
 (add-to-list 'load-path (concat user-emacs-directory "elisp"))
 
+(require 'lang-org)
 (require 'base)
 (require 'base-theme)
 (require 'base-extensions)
@@ -30,6 +31,6 @@
 (require 'base-programming)
 
 (require 'lang-modes)
-(require 'lang-org)
-(require 'lang-python)
+;; (require 'lang-python)
+
 ;;; init.el ends here
