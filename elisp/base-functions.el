@@ -75,8 +75,8 @@ Go to indentation otherwise"
   (unless consult--fd-command
     (setq consult--fd-command
 		  (if (eq 0 (call-process-shell-command "fdfind"))
-			  "fdfind")
-		  "fd"))
+			  "fdfind"
+			"fd")))
   (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
                (`(,re . ,hl) (funcall consult--regexp-compiler
                                       arg 'extended t)))
@@ -92,7 +92,8 @@ Go to indentation otherwise"
   (interactive "P")
   (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
          (default-directory (cdr prompt-dir)))
-    (call-interactively #'find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
+    (call-interactively
+	 #'find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
 
 (provide 'base-functions)
 ;;; base-functions.el ends here
