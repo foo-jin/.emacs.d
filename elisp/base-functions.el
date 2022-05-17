@@ -63,8 +63,9 @@ Go to indentation otherwise"
 (defun open-alacritty-in-workdir ()
   "Open an alacritty in the current folder"
   (interactive)
-  (call-process-shell-command
-   (concat "alacritty --working-directory=" default-directory) nil 0))
+  (let ((default-directory (project-root (project-current t))))
+	(call-process-shell-command
+	 (concat "alacritty --working-directory=" default-directory) nil 0)))
 
 ;; stolen, no, borrowed from:
 ;; https://github.com/karthink/.emacs.d/blob/0d56c66c2e2d53ba05366493f433e523cc36cd87/lisp/setup-consult.el
