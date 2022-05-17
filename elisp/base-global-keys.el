@@ -15,9 +15,9 @@
 
 (global-set-key (kbd "M-g w") 'browse-url)
 (global-set-key (kbd "M-O") 'switch-to-minibuffer-window)
-
 (global-set-key (kbd "C-c t") 'open-alacritty-in-workdir)
 (global-set-key (kbd "C-.") 'completion-at-point)
+(global-set-key [remap dabbrev-expand] 'hippie-expand) ;; M-/
 
 (provide 'base-global-keys)
 ;;; base-global-keys.el ends here
