@@ -140,9 +140,13 @@
 								  (consult-ripgrep "rg" ?r))
 		compilation-always-kill t))
 
+;; joaotavora.github.io/yasnippet/index.html
 (use-package yasnippet
-  :bind (:map yas-minor-mode-map ("C-c y" . 'yas-expand))
-  :config (yas-reload-all))
+  :bind (:map yas-minor-mode-map
+			  (("C-c y" . 'yas-expand)))
+  :config
+  (add-to-list 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
+  (yas-reload-all))
 
 ;; https://github.com/Wilfred/deadgrep
 (use-package deadgrep)
