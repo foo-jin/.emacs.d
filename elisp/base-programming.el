@@ -51,7 +51,8 @@
 		lsp-signature-render-documentation t
 		lsp-signature-doc-lines 5
 	    lsp-rust-analyzer-cargo-watch-command "clippy"
-		lsp-keep-workspace-alive nil))
+		lsp-keep-workspace-alive nil
+		lsp-auto-execute-action nil))
 
 (use-package lsp-ui
   :bind (:map lsp-mode-map ("C-h ." . #'lsp-ui-doc-glance))
