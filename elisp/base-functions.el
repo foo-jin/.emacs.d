@@ -63,7 +63,7 @@ Go to indentation otherwise"
 (defun open-alacritty-in-workdir ()
   "Open an alacritty in the current folder"
   (interactive)
-  (let ((default-directory (project-root (project-current t))))
+  (let ((default-directory (expand-file-name (project-root (project-current t)))))
 	(call-process-shell-command
 	 (concat "alacritty --working-directory=" default-directory) nil 0)))
 
