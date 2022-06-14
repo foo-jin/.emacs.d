@@ -20,6 +20,10 @@
   (diff-hl-flydiff-mode t)
   (global-diff-hl-mode))
 
+(use-package highlight-indent-guides
+  :diminish
+  :hook ((prog-mode . hightlight-indent-guides-mode))
+  :config (setq highlight-indent-guides-method 'bitmap))
 
 ;; (use-package company
   ;; :delight
