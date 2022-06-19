@@ -22,8 +22,9 @@
 
 (use-package highlight-indent-guides
   :diminish
-  :hook ((prog-mode . hightlight-indent-guides-mode))
-  :config (setq highlight-indent-guides-method 'bitmap))
+  :hook ((prog-mode . (lambda () (highlight-indent-guides-mode 1))))
+  :config
+  (setq highlight-indent-guides-method 'bitmap))
 
 ;; (use-package company
   ;; :delight
