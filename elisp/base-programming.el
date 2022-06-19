@@ -21,7 +21,7 @@
   (global-diff-hl-mode))
 
 (use-package highlight-indent-guides
-  :diminish
+  :delight
   :hook ((prog-mode . (lambda () (highlight-indent-guides-mode 1))))
   :config
   (setq highlight-indent-guides-method 'bitmap))
