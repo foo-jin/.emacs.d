@@ -18,6 +18,7 @@
 (global-set-key (kbd "C-c t") 'open-alacritty-in-workdir)
 (global-set-key (kbd "C-.") 'completion-at-point)
 (global-set-key [remap dabbrev-expand] 'hippie-expand) ;; M-/
+(global-set-key (kbd "C-x |") 'toggle-window-split)
 
 (provide 'base-global-keys)
 ;;; base-global-keys.el ends here

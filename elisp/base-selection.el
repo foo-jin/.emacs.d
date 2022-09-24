@@ -43,8 +43,10 @@
                 (customize-save-variable 'marginalia-annotator-registry
                                          marginalia-annotator-registry)))))
 
-
-
+;; https://github.com/minad/corfu
+(use-package corfu
+  :init
+  (global-corfu-mode))
 
 ;; https://github.com/minad/consult#configuration
 (use-package consult

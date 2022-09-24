@@ -13,10 +13,23 @@
 ;; https://github.com/abo-abo/avy
 (use-package avy
   :delight
+  :init
+  (defun avy-goto-word-in-line ()
+  "Jump to end of whitespace in current line"
+  (interactive);; (list (read-char "char: " t)))
+  (let (beg end)
+    (save-excursion
+      (end-of-line)
+      (setq end (point))
+      (beginning-of-line)
+      (setq beg (point)))
+    (avy-goto-word-0 nil beg end)))
   :bind
   ("M-g M-g" . #'avy-goto-line)
-  ("M-g c" . #'avy-goto-char-2)
-  ("M-g C" . #'avy-goto-char-timer))
+  ("M-g c" . #'avy-goto-char-timer)
+  ("M-g C" . #'avy-goto-char-2)
+  ("M-g SPC" . #'avy-goto-word-in-line)
+  ("M-g DEL" . #'avy-goto-word-1))
 
 
 (use-package ace-window
@@ -94,6 +107,19 @@
   :delight
   :config
   (which-key-mode))
+
+
+;; (use-package denote)
+
+
+(use-package erc
+  :config
+  (setq erc-nick "foo-jin"))
+
+
+(use-package dirvish
+  :init
+  (dirvish-override-dired-mode))
 
 
 (provide 'base-extensions)

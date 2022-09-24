@@ -56,13 +56,15 @@
 		lsp-signature-render-documentation t
 		lsp-signature-doc-lines 5
 	    lsp-rust-analyzer-cargo-watch-command "clippy"
+		lsp-rust-analyzer-rustfmt-extra-args "+nightly"
 		lsp-keep-workspace-alive nil
-		lsp-auto-execute-action nil))
+		lsp-auto-execute-action nil)
+  (lsp-rust-analyzer-inlay-hints-mode))
 
 (use-package lsp-ui
   :bind (:map lsp-mode-map ("C-h ." . #'lsp-ui-doc-glance))
   :config
-  (setq lsp-ui-doc-enable t
+  (setq lsp-ui-doc-enable nil
 		lsp-ui-doc-location 'at-point))
 
 (use-package consult-lsp
@@ -131,6 +133,9 @@
   (setq forge-database-file (expand-file-name "forge-database.sqlite" private-dir)
 		forge-owned-accounts '((foo-jin))))
 
+;; github.com/magit/orgit
+(use-package orgit)
+
 
 (use-package project
   :pin gnu
@@ -162,6 +167,13 @@
 ;;   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 ;;   (setq-default ediff-highlight-all-diffs 'nil)
 ;;   (setq ediff-diff-options "-w"))
+
+
+;; https://github.com/leon-barrett/just-mode.el
+(use-package just-mode)
+;; https://github.com/psibi/justl.el
+(use-package justl
+  :bind (("C-c j" . #'justl)))
 
 
 (provide 'base-programming)

@@ -6,7 +6,8 @@
   :hook ((org-mode . visual-line-mode)
 		 (org-mode . variable-pitch-mode)
 		 (org-mode . flyspell-mode)
-		 (org-mode . yas-minor-mode))
+		 (org-mode . yas-minor-mode)
+		 (org-mode . (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local))))
   :config
   (setq org-todo-keywords (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
 				  (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
@@ -26,26 +27,30 @@
 		org-capture-templates '(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
 								"* TODO %?\nAdded: %U\n %i"))
 		org-use-fast-todo-selection t
-		org-startup-indented t
+		org-startup-indented nil
 		org-ellipsis "  "
 		org-pretty-entities t
+		org-pretty-entities-include-sub-superscripts nil
 		org-hide-emphasis-markers t
 		org-special-ctrl-a/e t
-		org-hide-leading-stars t
+		org-hide-leading-stars nil
 		org-highlight-latex-and-related '(latex))
 
   ;; org-babel stuff
   (org-babel-do-load-languages
       'org-babel-load-languages
       '((python . t)
-		(shell . t)))
+		(shell . t)
+		(calc . t)
+		(gnuplot . t)))
+
   (setq org-src-fontify-natively t
 		org-src-window-setup 'current-window)
 
   ;; simple bullets
-  (font-lock-add-keywords 'org-mode
-                            '(("^ +\\([-*]\\) "
-                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  ;; (font-lock-add-keywords 'org-mode
+  ;;                           '(("^ +\\([-*]\\) "
+  ;;                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
   :bind
   ("C-c C-l" . org-store-link)
@@ -53,6 +58,14 @@
   ("C-c c" . org-capture))
 
 (use-package ob-async)
+
+(use-package ob-sagemath
+  :config
+  (setq org-babel-default-header-args:sage '((:session . t)
+											 (:results . "output"))))
+
+(use-package fish-mode)
+(use-package gnuplot)
 
 ;; (use-package cdlatex
 ;;   :after (org)

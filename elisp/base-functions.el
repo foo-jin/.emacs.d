@@ -95,5 +95,44 @@ Go to indentation otherwise"
     (call-interactively
 	 #'find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
 
+
+(defun toggle-window-split ()
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+         (next-win-buffer (window-buffer (next-window)))
+         (this-win-edges (window-edges (selected-window)))
+         (next-win-edges (window-edges (next-window)))
+         (this-win-2nd (not (and (<= (car this-win-edges)
+                     (car next-win-edges))
+                     (<= (cadr this-win-edges)
+                     (cadr next-win-edges)))))
+         (splitter
+          (if (= (car this-win-edges)
+             (car (window-edges (next-window))))
+          'split-window-horizontally
+        'split-window-vertically)))
+    (delete-other-windows)
+    (let ((first-win (selected-window)))
+      (funcall splitter)
+      (if this-win-2nd (other-window 1))
+      (set-window-buffer (selected-window) this-win-buffer)
+      (set-window-buffer (next-window) next-win-buffer)
+      (select-window first-win)
+      (if this-win-2nd (other-window 1))))))
+
+(defun org-in-tangle-dir (sub-path)
+  "Expand the SUB-PATH into the directory given by the tangle-dir
+property if that property exists, else use the
+`default-directory'."
+  (expand-file-name sub-path
+                    (or
+                     (org-entry-get (point) "tangle-dir" 'inherit)
+                     (default-directory))))
+
+(defalias 'mp-rust-windowing
+   (kmacro "C-x 3 C-x 3 C-x + M-o d C-x 2 M-o f C-u 1 5 M-x s h r i <return> M-o s"))
+
+
 (provide 'base-functions)
 ;;; base-functions.el ends here
