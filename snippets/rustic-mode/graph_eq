@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: graph equality for petgraph
+# key: graph_eq
+# --
+fn graph_eq<N, E, Ty, Ix>(
+    a: &petgraph::csr::Csr<N, E, Ty, Ix>,
+    b: &petgraph::csr::Csr<N, E, Ty, Ix>,
+) -> bool
+where
+    N: PartialEq,
+	E: PartialEq,
+   	Ty: petgraph::EdgeType,
+	Ix: petgraph::graph::IndexType + PartialEq,
+{
+	use petgraph::visit::{IntoEdgeReferences, IntoNodeReferences};
+
+	let a_ns = a.node_references();
+	let b_ns = b.node_references();
+	let a_es = a.edge_references().map(|e| (e.source(), e.target(), e.weight()));
+	let b_es = b.edge_references().map(|e| (e.source(), e.target(), e.weight()));
+	a_ns.eq(b_ns) && a_es.eq(b_es)
+}

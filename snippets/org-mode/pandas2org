@@ -1,0 +1,9 @@
+# key: pd2org
+# name: pandas2org
+# --
+#+name: pd2org
+#+begin_src python :var df="df" :exports none
+return f"return tabulate({df}, headers={df}.columns, tablefmt='orgtbl')"
+#+end_src
+
+#+header: :prologue from tabulate import tabulate

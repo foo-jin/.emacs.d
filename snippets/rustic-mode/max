@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: macro-max
+# key: max
+# --
+
+#[macro_export]
+macro_rules! max {
+    (\$x:expr, \$(\$xs:expr),*) => {
+        \$x \$(.max(\$xs))*
+	}
+}

@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: logtest
+# key: logtest
+# --
+static TEST_LOGS: Once = Once::new();
+
+fn init() {
+TEST_LOGS.call_once(|| {
+let _ =
+env_logger::builder().is_test(true).write_style(env_logger::WriteStyle::Always).build();
+})
+}
