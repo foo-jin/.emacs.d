@@ -26,10 +26,9 @@
     (avy-goto-word-0 nil beg end)))
   :bind
   ("M-g M-g" . #'avy-goto-line)
-  ("M-g c" . #'avy-goto-char-timer)
-  ("M-g C" . #'avy-goto-char-2)
+  ("M-g c" . #'avy-goto-word-1)
   ("M-g SPC" . #'avy-goto-word-in-line)
-  ("M-g DEL" . #'avy-goto-word-1))
+  ("M-g DEL" . #'avy-goto-char-timer))
 
 
 (use-package ace-window
