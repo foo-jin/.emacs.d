@@ -7,7 +7,7 @@
   ;;; Commentary:
   ;;;     `org-tangle'-d from `init.org'. Edits should go there, and not here.
   ;;; Code:
-  (setq debug-on-error t)
+  (setq debug-on-error nil)
 #+end_src
 
 * General configuration
@@ -45,7 +45,7 @@ All intrinsic Emacs settings are grouped here.
 
   (setq-default initial-scratch-message ""
 				tab-width 4)
-    (fset 'yes-or-no-p 'y-or-n-p)
+  (fset 'yes-or-no-p 'y-or-n-p)
   (setq confirm-nonexistent-file-or-buffer t
 		save-interprogram-paste-before-kill t
 		mouse-yank-at-point t
@@ -100,56 +100,7 @@ All intrinsic Emacs settings are grouped here.
 ** Org-mode
 Org-mode needs to be added really early on or everything goes tits up.
 #+begin_src elisp
-  ;; (straight-use-package 'org)
-  (use-package org
-	:config
-	(add-hook 'org-mode-hook 'flyspell-mode)
-	(add-hook 'org-mode-hook 'variable-pitch-mode)
-	(add-hook 'org-mode-hook 'yas-minor-mode)
-	(add-hook 'org-mode-hook 'visual-line-mode)
-	;; (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local)))
-	(setq org-capture-templates '(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
-								   "* TODO %?\nAdded: %U\n %i"))
-		  org-use-fast-todo-selection t
-		  org-startup-indented nil
-		  org-ellipsis "  "
-		  org-pretty-entities t
-		  org-pretty-entities-include-sub-superscripts nil
-		  org-hide-emphasis-markers t
-		  org-special-ctrl-a/e t
-		  org-hide-leading-stars nil
-		  org-highlight-latex-and-related '(latex))
-
-	;; org-babel stuff
-	(org-babel-do-load-languages
-	 'org-babel-load-languages
-	 '((python . t)
-	   (shell . t)
-	   (calc . t)
-	   (gnuplot . t)))
-
-	(setq org-src-fontify-natively t
-		  org-src-window-setup 'current-window)
-	:bind
-	("C-c C-l" . 'org-store-link)
-	("C-c a" . 'org-agenda)
-	("C-c c" . 'org-capture))
-
-  (use-package org-contrib)
-  (use-package ob-async
-	:config
-	(defun no-hide-overlays (orig-fun &rest args)
-	  (setq org-babel-hide-result-overlays nil))
-	(advice-add 'ob-async-org-babel-execute-src-block :before #'no-hide-overlays))
-  (use-package ob-sagemath
-	:config
-	(setq org-babel-default-header-args:sage '((:session . t)
-											   (:results . "output"))))
-
-  ;; this breaks stuff!
-  ;; (use-package org-appear
-  ;; :hook (org-mode . 'org-appear-mode))
-		;;; init.el ends here
+  (straight-use-package 'org)
 #+end_src
 
 ** Theming and appearance
@@ -183,11 +134,11 @@ built-in modes that are not configured in a specific ~use-package~ block.
 	(powerline-revert))
 
   (use-package delight
-	  :config   ;;    MODE     /VALUE/  /FILE/
-	  (delight '((eldoc-mode       nil "eldoc")
-				 (superword-mode)
-				 (auto-revert-mode nil "autorevert")
-				 (buffer-face-mode nil "face-remap"))))
+	:config   ;;    MODE     /VALUE/  /FILE/
+	(delight '((eldoc-mode       nil "eldoc")
+			   (superword-mode)
+			   (auto-revert-mode nil "autorevert")
+			   (buffer-face-mode nil "face-remap"))))
 #+end_src
 
 ** Enhancing what is already there
@@ -245,7 +196,6 @@ Global key-bindings to custom functionality. The specific functions invoked are 
   (global-set-key (kbd "M-g w") 'browse-url)
   (global-set-key (kbd "M-O") 'switch-to-minibuffer-window)
   (global-set-key (kbd "C-c t") 'open-alacritty-in-workdir)
-  (global-set-key (kbd "C-.") 'completion-at-point)
   (global-set-key [remap dabbrev-expand] 'hippie-expand) ;; M-/
   (global-set-key (kbd "C-x |") 'toggle-window-split)
 
@@ -260,15 +210,15 @@ Global key-bindings to custom functionality. The specific functions invoked are 
 	:delight
 	:init
 	(defun avy-goto-word-in-line ()
-	"Jump to word in current line"
-	(interactive)
-	(let (beg end)
-	  (save-excursion
-		(end-of-line)
-		(setq end (point))
-		(beginning-of-line)
-		(setq beg (point)))
-	  (avy-goto-word-0 nil beg end)))
+	  "Jump to word in current line"
+	  (interactive)
+	  (let (beg end)
+		(save-excursion
+		  (end-of-line)
+		  (setq end (point))
+		  (beginning-of-line)
+		  (setq beg (point)))
+		(avy-goto-word-0 nil beg end)))
 	:bind
 	("M-g M-g" . #'avy-goto-line)
 	("M-g c" . #'avy-goto-word-1)
@@ -387,6 +337,64 @@ Global key-bindings to custom functionality. The specific functions invoked are 
 	:hook (embark-collect-mode . 'consult-preview-at-point-mode))
 #+end_src
 
+** Org-mode
+Org-mode needs to be added really early on or everything goes tits up.
+#+begin_src elisp
+  (use-package org
+	:config
+	(add-hook 'org-mode-hook 'flyspell-mode)
+	(add-hook 'org-mode-hook 'variable-pitch-mode)
+	(add-hook 'org-mode-hook 'yas-minor-mode)
+	(add-hook 'org-mode-hook 'visual-line-mode)
+	;; (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local)))
+	(setq org-capture-templates '(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
+								   "* TODO %?\nAdded: %U\n %i"))
+		  org-use-fast-todo-selection t
+		  org-startup-indented nil
+		  org-ellipsis "  "
+		  org-pretty-entities t
+		  org-pretty-entities-include-sub-superscripts nil
+		  org-hide-emphasis-markers t
+		  org-special-ctrl-a/e t
+		  org-hide-leading-stars nil
+		  org-highlight-latex-and-related '(latex))
+
+	;; org-babel stuff
+	(org-babel-do-load-languages
+	 'org-babel-load-languages
+	 '((python . t)
+	   (shell . t)
+	   (calc . t)
+	   (gnuplot . t)))
+
+	(setq org-src-fontify-natively t
+		  org-src-window-setup 'current-window)
+	:bind
+	("C-c C-l" . 'org-store-link)
+	("C-c a" . 'org-agenda)
+	("C-c c" . 'org-capture))
+
+  (use-package org-contrib)
+  (use-package ob-async
+	:init
+	(defun no-hide-overlays (orig-fun &rest args)
+	  (setq org-babel-hide-result-overlays nil))
+	(advice-add 'ob-async-org-babel-execute-src-block :before #'no-hide-overlays))
+  (use-package ob-sagemath
+	:config
+	(setq org-babel-default-header-args:sage '((:session . t)
+											   (:results . "output"))))
+
+  ;; this breaks stuff!
+  ;; (use-package org-appear
+  ;; :hook (org-mode . 'org-appear-mode))
+#+end_src
+
+** Denote
+#+begin_src elisp
+  (use-package denote)
+#+end_src
+
 ** Dashboard
 #+begin_src elisp
   (use-package dashboard
@@ -442,6 +450,7 @@ Global key-bindings to custom functionality. The specific functions invoked are 
 ][flymake-collection]]
 - [[https://github.com/Wilfred/deadgrep][deadgrep]]
 - [[joaotavora.github.io/yasnippet/index.html][yasnippet]]
+- [[https://github.com/gregsexton/origami.el][origami]]
 
 #+begin_src elisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -453,7 +462,14 @@ Global key-bindings to custom functionality. The specific functions invoked are 
 	:config
 	(require 'smartparens-config))
 
+  (setq tab-always-indent 'complete)
   (use-package corfu
+	:custom
+	(corfu-auto nil)
+	:bind
+	(:map corfu-map
+		  ("SPC" . 'corfu-insert-separator)
+		  ("C-g" . 'corfu-reset))
 	:init
 	(global-corfu-mode))
 
@@ -471,7 +487,7 @@ Global key-bindings to custom functionality. The specific functions invoked are 
 
 
   (use-package flymake-collection
-	:hook (after-init . flymake-collection-hook-setup))
+	:hook (after-init . 'flymake-collection-hook-setup))
 
   (use-package project
 	:pin gnu
@@ -488,6 +504,8 @@ Global key-bindings to custom functionality. The specific functions invoked are 
 		  compilation-always-kill t))
 
   (use-package deadgrep)
+
+  (use-package origami)
 #+end_src
 
 ~yasnippet~ is awesome. The specific snippets can be found in ~./snippets/~.
@@ -531,7 +549,7 @@ Global key-bindings to custom functionality. The specific functions invoked are 
 ** Markdown
 #+begin_src elisp
   (use-package markdown-mode
-    :disabled
+	:disabled
 	:hook (markdown-mode . 'flyspell-mode)
 	:init
 	(setq-default markdown-hide-markup t))
@@ -594,7 +612,7 @@ Global key-bindings to custom functionality. The specific functions invoked are 
 		  lsp-rust-analyzer-rustfmt-extra-args "+nightly"
 		  lsp-keep-workspace-alive nil
 		  lsp-auto-execute-action nil))
-	;; (lsp-rust-analyzer-inlay-hints-mode))
+  ;; (lsp-rust-analyzer-inlay-hints-mode))
   ;; (lsp-register-custom-settings '(("some.setting.asdf" nil nil)))
 
   (use-package lsp-ui
@@ -818,7 +836,7 @@ Global key-bindings to custom functionality. The specific functions invoked are 
 					   (default-directory))))
 
   ;; (defalias 'mp-rust-windowing
-	;; (kmacro "C-x 3 C-x 3 C-x + M-o d C-x 2 M-o f C-u 1 5 M-x s h r i <return> M-o s"))
+  ;; (kmacro "C-x 3 C-x 3 C-x + M-o d C-x 2 M-o f C-u 1 5 M-x s h r i <return> M-o s"))
 
   (defun display-buffer-reuse-major-mode-window (buffer alist)
 	"Return a window displaying a buffer in BUFFER's major mode.
