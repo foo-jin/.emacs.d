@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: graph equality for petgraph
-# key: graph_eq
+# key: graph-eq
 # --
 fn graph_eq<N, E, Ty, Ix>(
     a: &petgraph::csr::Csr<N, E, Ty, Ix>,

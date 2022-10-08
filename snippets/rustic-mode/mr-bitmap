@@ -1,0 +1,16 @@
+# key: mr-bitmap
+# name: macro_rules ! bitmap { .. }
+# --
+#[macro_export]
+macro_rules! bitmap {
+(\$(\$key:expr,)+) => (bitmap!(\$(\$key),+));
+( \$(\$key:expr),* ) => {
+{
+let mut _set = ::roaring::RoaringBitmap::new();
+\$(
+_set.insert(\$key);
+)*
+_set
+}
+};
+}

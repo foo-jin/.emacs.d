@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: macro-max
-# key: max
+# name: macro_rules! max { .. }
+# key: mr-max
 # --
 
 #[macro_export]
