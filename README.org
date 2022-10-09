@@ -199,6 +199,15 @@ Global key-bindings to custom functionality. The specific functions invoked are 
   (global-set-key [remap dabbrev-expand] 'hippie-expand) ;; M-/
   (global-set-key (kbd "C-x |") 'toggle-window-split)
 
+  (define-prefix-command 'fj/toggle-map)
+  (define-key ctl-x-map "t" 'fj/toggle-map)
+  (define-key fj/toggle-map "c" #'column-number-mode)
+  (define-key fj/toggle-map "d" #'toggle-debug-on-error)
+  (define-key fj/toggle-map "f" #'auto-fill-mode)
+  (define-key fj/toggle-map "l" #'toggle-truncate-lines)
+  (define-key fj/toggle-map "q" #'toggle-debug-on-quit)
+  (define-key fj/toggle-map "r" #'dired-toggle-read-only)
+  (define-key fj/toggle-map "w" #'whitespace-mode)
 #+end_src
 
 * Packages
