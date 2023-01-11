@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: event!(level, ...);
+# key: event
+# key
+# --
+event!(Level::${1:$$(yas-choose-value '("ERROR" "INFO" "DEBUG" "TRACE"))}, $2);

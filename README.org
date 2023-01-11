@@ -97,7 +97,7 @@ All intrinsic Emacs settings are grouped here.
   (show-paren-mode 1)
 #+end_src
 
-** Org-mode
+** Load org-mode early
 Org-mode needs to be added really early on or everything goes tits up.
 #+begin_src elisp
   (straight-use-package 'org)
@@ -208,6 +208,15 @@ Global key-bindings to custom functionality. The specific functions invoked are 
   (define-key fj/toggle-map "q" #'toggle-debug-on-quit)
   (define-key fj/toggle-map "r" #'dired-toggle-read-only)
   (define-key fj/toggle-map "w" #'whitespace-mode)
+
+  (use-package hydra
+	:config
+	(defhydra hydra-toggle (global-map "C-c")
+	  "hideshow"
+	  ("sb" #'hs-show-block "show block")
+	  ("hb" #'hs-hide-block "hide block")
+	  ("sa" #'hs-show-all "show all")
+	  ("ha" #'hs-hide-all "hide all")))
 #+end_src
 
 * Packages
@@ -248,8 +257,7 @@ Global key-bindings to custom functionality. The specific functions invoked are 
 ** Completion
 - [[https://github.com/raxod502/selectrum][selectrum]]
 - [[https://github.com/raxod502/prescient.el][prescient]]
-- [[https://github.com/oantolin/orderless
-][orderless]]
+- [[https://github.com/oantolin/orderless][orderless]]
 - [[https://github.com/minad/consult#configuration][consult]]
 #+begin_src elisp
   (use-package selectrum
@@ -381,7 +389,9 @@ Org-mode needs to be added really early on or everything goes tits up.
 	:bind
 	("C-c C-l" . 'org-store-link)
 	("C-c a" . 'org-agenda)
-	("C-c c" . 'org-capture))
+	("C-c c" . 'org-capture)
+	(:map org-src-mode-map
+		  ("C-x C-s" . 'org-edit-src-exit)))
 
   (use-package org-contrib)
   (use-package ob-async
@@ -401,7 +411,10 @@ Org-mode needs to be added really early on or everything goes tits up.
 
 ** Denote
 #+begin_src elisp
-  (use-package denote)
+  (use-package denote
+	:config
+	(setq denote-templates
+		  '((crate . "* Description\n\n* Links\n- "))))
 #+end_src
 
 ** Dashboard
@@ -463,7 +476,10 @@ Org-mode needs to be added really early on or everything goes tits up.
 
 #+begin_src elisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-  (add-hook 'conf-mode 'display-line-numbers-mode)
+  (add-hook 'conf-mode-hook 'display-line-numbers-mode)
+  (add-hook 'prog-mode-hook 'hs-minor-mode)
+  (add-hook 'conf-mode-hook 'hs-minor-mode)
+  (add-hook 'conf-mode-hook 'auto-revert-mode)
 
   (use-package smartparens
 	:delight
@@ -473,6 +489,10 @@ Org-mode needs to be added really early on or everything goes tits up.
 
   (setq tab-always-indent 'complete)
   (use-package corfu
+	:init
+	(setq completion-styles '(orderless basic)
+		  completion-category-defaults nil
+		  completion-category-overrides '((file (styles . (partial-completion)))))
 	:custom
 	(corfu-auto nil)
 	:bind
@@ -514,7 +534,6 @@ Org-mode needs to be added really early on or everything goes tits up.
 
   (use-package deadgrep)
 
-  (use-package origami)
 #+end_src
 
 ~yasnippet~ is awesome. The specific snippets can be found in ~./snippets/~.
@@ -604,6 +623,8 @@ Org-mode needs to be added really early on or everything goes tits up.
 #+begin_src elisp
   ;; emacs-lsp.github.io/lsp-mode/
   (use-package lsp-mode
+	:custom
+	(lsp-completion-provider :none)
 	:diminish
 	:init (setq lsp-keymap-prefix "C-c l")
 	:bind (:map lsp-mode-map
@@ -616,7 +637,7 @@ Org-mode needs to be added really early on or everything goes tits up.
 	(setq lsp-eldoc-enable-hover t
 		  lsp-signature-auto-activate t
 		  lsp-signature-render-documentation t
-		  lsp-signature-doc-lines 5
+		  lsp-signature-doc-lines 3
 		  lsp-rust-analyzer-cargo-watch-command "clippy"
 		  lsp-rust-analyzer-rustfmt-extra-args "+nightly"
 		  lsp-keep-workspace-alive nil
@@ -628,7 +649,8 @@ Org-mode needs to be added really early on or everything goes tits up.
 	:bind (:map lsp-mode-map ("C-c d" . #'lsp-ui-doc-glance))
 	:config
 	(setq lsp-ui-doc-enable nil
-		  lsp-ui-doc-location 'at-point))
+		  lsp-ui-doc-location 'top-right-corner
+		  lsp-ui-sideline-show-hover t))
 
   (use-package consult-lsp
 	:after lsp
@@ -683,25 +705,26 @@ Org-mode needs to be added really early on or everything goes tits up.
 		  ("C-c C-<tab>" . 'rustic-popup)
 		  ("C-c C-p" . nil)
 		  ("M-g d" . 'lsp-rust-analyzer-open-external-docs)
-		  ("C-c C-c c" . nil)) ;; cleaning is bad
+		  ("C-c C-c c" . nil)
+		  ("C-c C-c f" . 'rustic-format-buffer)) ;; cleaning is bad
 	:config
 	(add-hook 'rustic-mode-hook 'tree-sitter-hl-mode)
 	(add-hook 'rustic-mode-hook 'yas-minor-mode)
 	(setq rustic-lsp-client 'lsp-mode
-		  rustic-format-trigger 'on-save
+		  rustic-format-trigger nil
 		  rustic-format-display-method 'ignore))
 
-  (setq-default display-buffer-reuse-frames t)
+  ;; (setq-default display-buffer-reuse-frames t)
 
   ;; Always open compilation buffers in the same window.
-  (add-to-list 'display-buffer-alist
-			   (cons (lambda (buffer alist)
-					   (with-current-buffer buffer
-						 (eq major-mode 'rust-compilation)))
-					 (cons 'display-buffer-reuse-major-mode-window
-						   '((inhibit-same-window . nil)
-							 (reusable-frames . visible)
-							 (inhibit-switch-frame . nil)))))
+  ;; (add-to-list 'display-buffer-alist
+  ;; 			 (cons (lambda (buffer alist)
+  ;; 					 (with-current-buffer buffer
+  ;; 					   (eq major-mode 'rust-compilation)))
+  ;; 				   (cons 'display-buffer-reuse-major-mode-window
+  ;; 						 '((inhibit-same-window . nil)
+  ;; 						   (reusable-frames . visible)
+  ;; 						   (inhibit-switch-frame . nil)))))
 #+end_src
 
 ** Java

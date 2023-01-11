@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: span!(level, ...);
+# key: span
+# key
+# --
+span!(Level::${1:$$(yas-choose-value '("ERROR" "INFO" "DEBUG" "TRACE"))}, $2);

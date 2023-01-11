@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: format!("{}", value)
+# key: format
+# --
+format!("${1:\{\}}", $2)
