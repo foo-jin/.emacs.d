@@ -15,6 +15,7 @@
 "Let there be ~straight~."
 
 #+begin_src elisp
+  (setq straight-repository-branch "develop")
   (defvar bootstrap-version)
   (let ((bootstrap-file
 		 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -266,7 +267,8 @@ Global key-bindings to custom functionality. The specific functions invoked are 
 
   (use-package orderless
 	:custom
-	(completion-styles '(orderless))
+	;; (orderless-matching-styles '(orderless-flex)); orderless-regexp orderless-literal))
+	(completion-styles '(orderless basic))
 	(savehist-mode)
 	(setq orderless-skip-highlighting (lambda () selectrum-is-active)))
 
@@ -417,6 +419,23 @@ Org-mode needs to be added really early on or everything goes tits up.
 		  '((crate . "* Description\n\n* Links\n- "))))
 #+end_src
 
+** Ledger-mode
+#+begin_src elisp
+  (use-package ledger-mode
+	:mode "\\.ledger\\'"
+	:custom
+	(ledger-reconcile-default-commodity "EUR")
+	:config
+	(setq ledger-default-date-format ledger-iso-date-format
+		  ledger-mode-should-check-version nil
+		  ledger-report-links-in-register nil
+		  ledger-binary-path "ledger"))
+
+  (use-package flycheck-ledger
+	:hook ledger-mode)
+#+end_src
+
+
 ** Dashboard
 #+begin_src elisp
   (use-package dashboard
@@ -490,21 +509,27 @@ Org-mode needs to be added really early on or everything goes tits up.
   (setq tab-always-indent 'complete)
   (use-package corfu
 	:init
-	(setq completion-styles '(orderless basic)
-		  completion-category-defaults nil
-		  completion-category-overrides '((file (styles . (partial-completion)))))
-	:custom
-	(corfu-auto nil)
+	(setq corfu-auto t
+		  corfu-quit-no-match 'separator
+		  corfu-quit-at-boundary 'separator
+		  corfu-auto-delay 0
+		  corfu-auto-prefix 2)
 	:bind
 	(:map corfu-map
-		  ("SPC" . 'corfu-insert-separator)
-		  ("C-g" . 'corfu-reset))
+		  ("C-g" . 'corfu-quit))
 	:init
 	(global-corfu-mode))
 
+  (use-package cape
+	:init
+	(add-to-list 'completion-at-point-functions #'cape-dabbrev)
+	(add-to-list 'completion-at-point-functions #'cape-file))
+
   (use-package tree-sitter
+	:disabled
 	:delight)
-  (use-package tree-sitter-langs)
+  (use-package tree-sitter-langs
+	:disabled)
 
   (use-package flymake
 	:hook (prog-mode)
@@ -621,8 +646,35 @@ Org-mode needs to be added really early on or everything goes tits up.
 
 ** LSP
 #+begin_src elisp
+
+
+	;; github.com/joaotavora/eglot
+  (use-package eglot
+	;; :hook ((rustic-mode . eglot-ensure)) ;; rustic mode takes care of this
+	:bind (:map eglot-mode-map
+				("C-c r" . #'eglot-rename)
+				("M-RET" . #'eglot-code-actions)
+				("C-c =" . #'eglot-format)
+				("M-g t" . #'eglot-find-typeDefinition))
+	:custom
+	(eglot-confirm-server-initiated-edits t)
+	(eglot-autoshutdown t)
+	:config
+	(setq-local completion-at-point-functions
+				(list (cape-capf-buster #'eglot-completion-at-point))))
+
+  (use-package consult-eglot
+	:disabled
+	:bind (:map eglot-mode-map ("M-g s" . #'consult-lsp-symbols)))
+
+  (use-package eldoc
+	:pin gnu
+	:diminish
+	:bind ("C-c d" . #'eldoc-doc-buffer))
+
   ;; emacs-lsp.github.io/lsp-mode/
   (use-package lsp-mode
+	:disabled
 	:custom
 	(lsp-completion-provider :none)
 	:diminish
@@ -656,24 +708,6 @@ Org-mode needs to be added really early on or everything goes tits up.
 	:after lsp
 	:bind (("M-s s" . 'consult-lsp-symbols)
 		   ("M-s M-s" . 'consult-lsp-file-symbols)))
-
-  (use-package eldoc
-	:pin gnu
-	:diminish
-	:bind ("C-c d" . #'eldoc))
-
-  ;; github.com/joaotavora/eglot
-  (use-package eglot
-	:disabled
-	;; :hook ((rustic-mode . eglot-ensure)) ;; rustic mode takes care of this
-	:bind (:map eglot-mode-map ("C-c r" . #'eglot-rename)
-				("M-RET" . #'eglot-code-actions))
-	:custom
-	(eglot-autoshutdown t))
-
-  (use-package consult-eglot
-	:disabled
-	:bind (:map eglot-mode-map ("M-g s" . #'consult-lsp-symbols)))
 #+end_src
 
 ** Latex
@@ -708,9 +742,9 @@ Org-mode needs to be added really early on or everything goes tits up.
 		  ("C-c C-c c" . nil)
 		  ("C-c C-c f" . 'rustic-format-buffer)) ;; cleaning is bad
 	:config
-	(add-hook 'rustic-mode-hook 'tree-sitter-hl-mode)
+	;; (add-hook 'rustic-mode-hook 'tree-sitter-hl-mode)
 	(add-hook 'rustic-mode-hook 'yas-minor-mode)
-	(setq rustic-lsp-client 'lsp-mode
+	(setq rustic-lsp-client 'eglot
 		  rustic-format-trigger nil
 		  rustic-format-display-method 'ignore))
 
