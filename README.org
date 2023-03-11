@@ -507,16 +507,20 @@ Org-mode needs to be added really early on or everything goes tits up.
 	(require 'smartparens-config))
 
   (setq tab-always-indent 'complete)
+  (setq tab-first-completion 'eol)
+
   (use-package corfu
-	:init
-	(setq corfu-auto t
-		  corfu-quit-no-match 'separator
-		  corfu-quit-at-boundary 'separator
-		  corfu-auto-delay 0
-		  corfu-auto-prefix 2)
+	:custom
+	(corfu-quit-at-boundary 'separator)
+	(corfu-quit-no-match 't)
+	(corfu-echo-documentation t)
+	(corfu-cycle t)
+	(corfu-preselect 'first)
+	(corfu-auto t)
+	(corfu-auto-delay 0)
+	(corfu-auto-prefix 1)
 	:bind
-	(:map corfu-map
-		  ("C-g" . 'corfu-quit))
+	(:map corfu-map ("C-g" . 'corfu-quit))
 	:init
 	(global-corfu-mode))
 
@@ -565,9 +569,10 @@ Org-mode needs to be added really early on or everything goes tits up.
 #+begin_src elisp
   (use-package yasnippet
 	:bind (:map yas-minor-mode-map
-				(("C-c y" . 'yas-expand)))
+				(([tab] . nil)
+				 ("C-<tab>" . 'yas-expand)))
 	:config
-	(add-to-list 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
+	;; (add-to-list 'hippie-expand-try-functions-list 'yas-hippie-try-expand)
 	(yas-reload-all))
 #+end_src
 
@@ -646,9 +651,7 @@ Org-mode needs to be added really early on or everything goes tits up.
 
 ** LSP
 #+begin_src elisp
-
-
-	;; github.com/joaotavora/eglot
+  ;; github.com/joaotavora/eglot
   (use-package eglot
 	;; :hook ((rustic-mode . eglot-ensure)) ;; rustic mode takes care of this
 	:bind (:map eglot-mode-map
@@ -657,11 +660,22 @@ Org-mode needs to be added really early on or everything goes tits up.
 				("C-c =" . #'eglot-format)
 				("M-g t" . #'eglot-find-typeDefinition))
 	:custom
-	(eglot-confirm-server-initiated-edits t)
+	(eglot-confirm-server-initiated-edits nil)
 	(eglot-autoshutdown t)
 	:config
-	(setq-local completion-at-point-functions
-				(list (cape-capf-buster #'eglot-completion-at-point))))
+	(add-to-list 'eglot-server-programs
+				 `(rustic-mode . ("rust-analyzer"
+								  :initializationOptions
+								  (:cargo (:extraEnv (:CARGO_TARGET_DIR
+													  ,(concat (getenv "CARGO_TARGET_DIR") "/RA")))
+								   :imports (:prefix "self")
+								   :completion (:privateEditable (:enable t))))))
+	(defun fj/eglot-capf ()
+	  (setq-local completion-at-point-functions
+				  (list (cape-super-capf
+						 #'eglot-completion-at-point
+						 #'cape-dabbrev))))
+	(add-hook 'eglot-managed-mode-hook #'fj/eglot-capf))
 
   (use-package consult-eglot
 	:disabled
