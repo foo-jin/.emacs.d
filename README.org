@@ -654,11 +654,13 @@ Org-mode needs to be added really early on or everything goes tits up.
   ;; github.com/joaotavora/eglot
   (use-package eglot
 	;; :hook ((rustic-mode . eglot-ensure)) ;; rustic mode takes care of this
-	:bind (:map eglot-mode-map
+	:bind ((:map eglot-mode-map
 				("C-c r" . #'eglot-rename)
 				("M-RET" . #'eglot-code-actions)
 				("C-c =" . #'eglot-format)
 				("M-g t" . #'eglot-find-typeDefinition))
+		   (:map fj/toggle-map
+				 ("i" . eglot-inlay-hints-mode)))
 	:custom
 	(eglot-confirm-server-initiated-edits nil)
 	(eglot-autoshutdown t)
@@ -677,8 +679,12 @@ Org-mode needs to be added really early on or everything goes tits up.
 						 #'cape-dabbrev))))
 	(add-hook 'eglot-managed-mode-hook #'fj/eglot-capf))
 
+  (use-package eglot-x
+	:straight (:type git :host github :repo "nemethf/eglot-x")
+	:after eglot)
+
   (use-package consult-eglot
-	:disabled
+	:after eglot
 	:bind (:map eglot-mode-map ("M-g s" . #'consult-lsp-symbols)))
 
   (use-package eldoc
