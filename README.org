@@ -854,9 +854,11 @@ Org-mode needs to be added really early on or everything goes tits up.
   (defun open-alacritty-in-workdir ()
 	"Open an alacritty in the current folder"
 	(interactive)
-	(let ((default-directory (expand-file-name (project-root (project-current t)))))
+	(let ((dir (if (project-current)
+				   (expand-file-name (project-root (project-current)))
+				 default-directory)))
 	  (call-process-shell-command
-	   (concat "alacritty --working-directory=" default-directory) nil 0)))
+	   (concat "alacritty --working-directory=" dir) nil 0)))
 
   ;; stolen, no, borrowed from:
   ;; https://github.com/karthink/.emacs.d/blob/0d56c66c2e2d53ba05366493f433e523cc36cd87/lisp/setup-consult.el
