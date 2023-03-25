@@ -621,6 +621,15 @@ Org-mode needs to be added really early on or everything goes tits up.
   (use-package fish-mode)
 #+end_src
 
+** Nushell
+#+begin_src elisp
+  (use-package nushell-mode
+	:straight (:type git :host github :repo "azzamsa/emacs-nushell")
+	:custom
+	(nushell-enable-auto-indent t))
+#+end_src
+
+
 ** Gnuplot
 #+begin_src elisp
   (use-package gnuplot)
