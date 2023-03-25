@@ -425,14 +425,17 @@ Org-mode needs to be added really early on or everything goes tits up.
 	:mode "\\.ledger\\'"
 	:custom
 	(ledger-reconcile-default-commodity "EUR")
-	:config
-	(setq ledger-default-date-format ledger-iso-date-format
-		  ledger-mode-should-check-version nil
-		  ledger-report-links-in-register nil
-		  ledger-binary-path "ledger"))
+	(ledger-reports
+	 '(("reg" "%(binary) -f %(ledger-file) reg assets:asn:checking")
+	   ("bal" "%(binary) -f %(ledger-file) bal assets --lot-prices --flat")
+	   ("debts" "%(binary) -f %(ledger-file) bal liabilities")
+	   ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
+	   ("account" "%(binary) -f %(ledger-file) reg %(account)")))
+	(ledger-report-links-in-register t)
+	(ledger-default-date-format ledger-iso-date-format))
 
   (use-package flycheck-ledger
-	:hook ledger-mode)
+	:hook (ledger-mode . flycheck-mode))
 #+end_src
 
 
